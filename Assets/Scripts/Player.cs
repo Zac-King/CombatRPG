@@ -1,17 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
-public enum UnitStates
-{
-    INIT,
-    IDLE,
-    ATTACK,
-    HIT,
-    DEAD
-}
-
-public class Enemy : EventPubSub, IUnit
+public class Player : MonoBehaviour
 {
     [SerializeField]
     private GameObject _target;
@@ -57,13 +47,13 @@ public class Enemy : EventPubSub, IUnit
     void Update()
     {
         // Update State based on Parameters     // Whatever they will be
-        if(Input.GetKeyDown( KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            _fsm.Transition(_fsm.state, UnitStates.HIT);
+            _fsm.Transition(_fsm.state, UnitStates.ATTACK);
         }
 
         // perform Actions based on state
-        switch(_fsm.state)
+        switch (_fsm.state)
         {
             case UnitStates.IDLE:
                 this.OnIdle();
@@ -80,7 +70,7 @@ public class Enemy : EventPubSub, IUnit
         }
     }
 
-    public  float speed()
+    public float speed()
     {
         return _speed;
     }
@@ -88,12 +78,12 @@ public class Enemy : EventPubSub, IUnit
     // // IUnit inteface Functions
     public void OnIdle()
     {
-       Debug.Log(gameObject.name + " : OnIdle()");
-    } 
+        Debug.Log(gameObject.name + " : OnIdle()");
+    }
 
     public void OnDead()
     {
-        Publish(gameObject.name + "_Dead");
+        
         Destroy(gameObject);
         // add Experience or whatever
         // add Gold
@@ -102,7 +92,7 @@ public class Enemy : EventPubSub, IUnit
 
     public void OnAttack(GameObject go, int a)
     {
-        Debug.Log("Nothing Here Yet OnAttack() " + gameObject.name);
+        Debug.Log(gameObject.name + " : OnAttack()");
     }
 
     public void OnHit(int a)
